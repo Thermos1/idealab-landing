@@ -41,12 +41,10 @@ const ogImageAbsolute = ogImage.startsWith("http")
 const ogLocaleMap: Record<Locale, string> = {
   ru: "ru_RU",
   kk: "kk_KZ",
-  en: "en_US",
 };
 const htmlLangMap: Record<Locale, string> = {
   ru: "ru",
   kk: "kk",
-  en: "en",
 };
 ---
 
@@ -69,7 +67,7 @@ const htmlLangMap: Record<Locale, string> = {
           hreflang={htmlLangMap[l]}
           href={
             _site
-              ? `${_site}${l === "ru" ? "" : "/" + l}${_path.replace(/^\/(kk|en)/, "")}`
+              ? `${_site}${l === "ru" ? "" : "/" + l}${_path.replace(/^\/(kk)/, "")}`
               : ""
           }
         />

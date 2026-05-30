@@ -5,26 +5,22 @@
 // KK strings are a working draft — Динара / KK-носитель должны пройтись по ним перед запуском основного домена.
 // EN is for international patients / b2b enquiries.
 
-export const LOCALES = ["ru", "kk", "en"] as const;
+export const LOCALES = ["ru", "kk"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 export const LOCALE_LABELS: Record<Locale, string> = {
   ru: "Рус",
   kk: "Қаз",
-  en: "Eng",
 };
 
 export const LOCALE_LABELS_FULL: Record<Locale, string> = {
   ru: "Русский",
   kk: "Қазақша",
-  en: "English",
 };
 
 // Detect locale from URL pathname.
 export function getLocaleFromPath(pathname: string): Locale {
-  if (pathname.startsWith("/kk")) return "kk";
-  if (pathname.startsWith("/en")) return "en";
-  return "ru";
+  if (pathname.startsWith("/kk")) return "kk";  return "ru";
 }
 
 // Build a localized path: switch the locale prefix of `currentPath` to `target`.
@@ -34,9 +30,7 @@ export function getLocaleFromPath(pathname: string): Locale {
 export function localizedPath(currentPath: string, target: Locale): string {
   // Strip leading locale (kk or en) if any
   let rest = currentPath;
-  if (rest.startsWith("/kk/") || rest === "/kk") rest = rest.slice(3) || "/";
-  else if (rest.startsWith("/en/") || rest === "/en") rest = rest.slice(3) || "/";
-  if (!rest.startsWith("/")) rest = "/" + rest;
+  if (rest.startsWith("/kk/") || rest === "/kk") rest = rest.slice(3) || "/";  if (!rest.startsWith("/")) rest = "/" + rest;
   if (target === "ru") return rest === "" ? "/" : rest;
   // Avoid double-slash when rest is "/"
   const tail = rest === "/" ? "" : rest;
@@ -1181,7 +1175,7 @@ const kk: Strings = {
     download_meta: "PDF · Еуразиялық патенттік конвенцияға қатысушы мемлекеттер аумағында түпнұсқа",
   },
 };
-export const ALL_STRINGS: Record<Locale, Strings> = { ru, kk, en };
+export const ALL_STRINGS: Record<Locale, Strings> = { ru, kk };
 
 export function t(locale: Locale): Strings {
   return ALL_STRINGS[locale] ?? ALL_STRINGS.ru;
