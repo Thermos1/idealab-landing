@@ -1,7 +1,6 @@
 ---
 // Homepage sections shared across all 3 locales.
 import { t, type Locale } from "../i18n/ui";
-import VideoTestimonials from "./VideoTestimonials.astro";
 
 interface Props {
   locale: Locale;
@@ -48,7 +47,7 @@ const serviceIconKeys = [
   <div class="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/4 w-[500px] h-[500px] rounded-full bg-gold-50 blur-3xl pointer-events-none"></div>
 
   <div class="container-x relative pt-12 pb-16 lg:pt-20 lg:pb-24">
-    <div class="grid lg:grid-cols-[1.2fr_1fr] gap-10 lg:gap-16 items-center">
+    <div class="max-w-narrow">
       <!-- Left -->
       <div class="reveal">
         <div class="eyebrow mb-5 inline-flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-brand-100">
@@ -79,18 +78,7 @@ const serviceIconKeys = [
         </p>
       </div>
 
-      <!-- Right: metrics -->
-      <div class="grid grid-cols-2 gap-3 sm:gap-4 reveal">
-        {
-          s.hero.metrics.map((m) => (
-            <div class="card p-5 sm:p-6">
-              <div class="font-display font-bold text-3xl sm:text-4xl text-ink-900 leading-none">{m.value}</div>
-              <div class="mt-2 text-[13px] sm:text-[14px] text-ink-400 leading-snug">{m.label}</div>
-            </div>
-          ))
-        }
       </div>
-    </div>
   </div>
 </section>
 
@@ -121,38 +109,7 @@ const serviceIconKeys = [
   </div>
 </section>
 
-<!-- ========================================================================== -->
-<!-- SERVICES PREVIEW -->
-<!-- ========================================================================== -->
-<section class="bg-mist py-16 lg:py-24">
-  <div class="container-x">
-    <div class="max-w-narrow mb-10 lg:mb-14 reveal">
-      <div class="eyebrow mb-3">{s.services_preview.eyebrow}</div>
-      <h2 class="mb-4">{s.services_preview.title}</h2>
-      <p class="lede">{s.services_preview.lede}</p>
-    </div>
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
-      {
-        s.services_preview.items.map((item, i) => (
-          <div class="reveal card-hover p-6 group">
-            <div class="h-10 w-10 rounded-lg bg-brand text-white inline-flex items-center justify-center mb-4">
-              <span class="inline-flex h-5 w-5" set:html={icons[serviceIconKeys[i % serviceIconKeys.length]]} />
-            </div>
-            <h3 class="text-[17px] mb-2 text-ink-900">{item.title}</h3>
-            <p class="text-ink-600 text-[14px] leading-relaxed">{item.body}</p>
-          </div>
-        ))
-      }
-    </div>
-
-    <div class="mt-10 lg:mt-12 text-center reveal">
-      <a href={lp("/services")} class="btn-primary">
-        {s.services_preview.cta}
-      </a>
-    </div>
-  </div>
-</section>
 
 <!-- ========================================================================== -->
 <!-- TECHNOLOGY -->
@@ -242,10 +199,7 @@ const serviceIconKeys = [
   </div>
 </section>
 
-<!-- ========================================================================== -->
-<!-- VIDEO TESTIMONIALS -->
-<!-- ========================================================================== -->
-<VideoTestimonials locale={locale} />
+
 
 <!-- ========================================================================== -->
 <!-- CONTACT CTA -->

@@ -18,8 +18,10 @@ function lp(target: string): string {
 const navItems = [
   { href: lp("/services"), label: s.nav.services },
   { href: lp("/locations"), label: s.nav.locations },
-  { href: lp("/about"), label: s.nav.about },
-  ];
+  { href: lp("/license"), label: s.nav.license || "Лицензия" },
+  { href: lp("/offer"), label: s.nav.offer || "Оферта" },
+  { href: lp("/preparation"), label: s.nav.preparation || "Подготовка" },
+    ];
 ---
 
 <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-rule">

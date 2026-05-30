@@ -15,7 +15,6 @@ const PAGES: { path: string; locales: ("ru" | "kk")[]; priority: number; changef
   { path: "/", locales: ["ru", "kk"], priority: 1.0, changefreq: "weekly" },
   { path: "/services", locales: ["ru", "kk"], priority: 0.9, changefreq: "monthly" },
   { path: "/locations", locales: ["ru", "kk"], priority: 0.9, changefreq: "monthly" },
-  { path: "/about", locales: ["ru", "kk"], priority: 0.8, changefreq: "monthly" },
   { path: "/license", locales: ["ru", "kk"], priority: 0.7, changefreq: "yearly" },
   { path: "/preparation", locales: ["ru", "kk"], priority: 0.7, changefreq: "yearly" },
   { path: "/offer", locales: ["ru", "kk"], priority: 0.4, changefreq: "yearly" },
