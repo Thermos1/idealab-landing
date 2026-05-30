@@ -1,0 +1,48 @@
+---
+import Base from "../../layouts/Base.astro";
+import StaticPage from "../../components/StaticPage.astro";
+---
+
+<Base locale="kk" title="Лицензия — IdeaLab">
+  <StaticPage
+    locale="kk"
+    title="Медициналық қызмет лицензиясы"
+    intro="«НИИ Аллергоскрин» ЖШС (IdeaLab.kz) Қазақстан Республикасы Денсаулық сақтау министрлігінің мемлекеттік лицензиясы негізінде медициналық қызмет көрсетеді."
+  >
+    <p class="text-[12.5px] text-ink-400 mb-6">
+      <a href="/license" class="text-brand-700 hover:underline">Русская версия →</a>
+    </p>
+
+    <div class="space-y-4 mb-8">
+      <div class="p-5 bg-mist border border-rule rounded-xl">
+        <p class="text-[13px] uppercase tracking-[0.16em] font-semibold text-brand-700 mb-2">Заңды тұлғаның деректемелері</p>
+        <ul class="space-y-1 text-[14.5px] text-ink-600">
+          <li><strong class="text-ink-900">Атауы:</strong> «НИИ Аллергоскрин» ЖШС</li>
+          <li><strong class="text-ink-900">БИН:</strong> 211140010036</li>
+          <li><strong class="text-ink-900">Заңды мекенжайы:</strong> Астана қ., Сабыра Рақымов к-сі, 22</li>
+          <li><strong class="text-ink-900">Директор:</strong> Досмағұл А.А.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2 class="!text-[24px] !mt-2 !mb-3">Лицензияның сканерленген көшірмелері</h2>
+    <p class="mb-6">Лицензия құжаттары — өкілетті органның электрондық цифрлық қолтаңбасымен куәландырылған түпнұсқалар.</p>
+
+    <div class="grid sm:grid-cols-3 gap-4 not-prose">
+      <a href="/docs/idealab-license-1.jpg" target="_blank" rel="noopener" class="block border border-rule rounded-xl overflow-hidden hover:border-brand transition group">
+        <img src="/docs/idealab-license-1.jpg" alt="Лицензия — 1-бет" class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition" loading="lazy" />
+        <div class="p-3 text-[13px] text-ink-600 text-center bg-mist border-t border-rule">1-бет</div>
+      </a>
+      <a href="/docs/idealab-license-2.jpg" target="_blank" rel="noopener" class="block border border-rule rounded-xl overflow-hidden hover:border-brand transition group">
+        <img src="/docs/idealab-license-2.jpg" alt="Лицензия — 2-бет" class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition" loading="lazy" />
+        <div class="p-3 text-[13px] text-ink-600 text-center bg-mist border-t border-rule">2-бет</div>
+      </a>
+      <a href="/docs/idealab-license-3.jpg" target="_blank" rel="noopener" class="block border border-rule rounded-xl overflow-hidden hover:border-brand transition group">
+        <img src="/docs/idealab-license-3.jpg" alt="Лицензия — 3-бет" class="w-full aspect-[3/4] object-cover group-hover:scale-105 transition" loading="lazy" />
+        <div class="p-3 text-[13px] text-ink-600 text-center bg-mist border-t border-rule">3-бет</div>
+      </a>
+    </div>
+
+    <p class="mt-8 text-[13px] text-ink-400">Толық өлшемде ашу үшін суретті басыңыз.</p>
+  </StaticPage>
+</Base>

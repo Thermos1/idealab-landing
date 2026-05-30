@@ -1,0 +1,154 @@
+---
+import { t, type Locale } from "../i18n/ui";
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const s = t(locale);
+
+function lp(target: string): string {
+  if (locale === "ru") return target;
+  return `/${locale}${target === "/" ? "" : target}`;
+}
+
+// 2GIS / Google Maps links per branch.
+// Almaty: map link points to Kabanbay Batyra 111 (main/Neuromed), not old Seifullin.
+const mapLinks: Record<string, { gis: string; google: string }> = {
+  astana: {
+    gis: "https://2gis.kz/astana/search/%D0%91%D0%B0%D0%B9%D1%82%D1%83%D1%80%D1%81%D1%8B%D0%BD%D0%BE%D0%B2%D0%B0+6",
+    google: "https://www.google.com/maps/search/?api=1&query=Baitursynova+6+Astana",
+  },
+  almaty: {
+    gis: "https://2gis.kz/almaty/search/%D0%9A%D0%B0%D0%B1%D0%B0%D0%BD%D0%B1%D0%B0%D0%B9+%D0%91%D0%B0%D1%82%D1%8B%D1%80%D0%B0+111",
+    google: "https://www.google.com/maps/search/?api=1&query=Kabanbay+Batyra+111+Almaty",
+  },
+  karaganda: {
+    gis: "https://2gis.kz/karaganda/search/%D0%A1%D1%82%D0%B5%D0%BF%D0%BD%D0%BE%D0%B9-2+18%2F1",
+    google: "https://www.google.com/maps/search/?api=1&query=Stepnoy+18+Karaganda",
+  },
+  temirtau: {
+    gis: "https://2gis.kz/temirtau/search/%D0%9C%D0%B8%D1%80%D0%B0+114",
+    google: "https://www.google.com/maps/search/?api=1&query=Mira+114+Temirtau",
+  },
+};
+
+// Real branch facade photos per city. Each has 2 sizes for retina.
+const cityPhoto: Record<string, { src: string; src2x: string; alt: string }> = {
+  astana: {
+    src: "/photos/astana-baitursynova-600.jpg",
+    src2x: "/photos/astana-baitursynova-1200.jpg",
+    alt: "Филиал IdeaLab в Астане, ул. Байтурсынова 6",
+  },
+  almaty: {
+    src: "/photos/almaty-kabanbay-600.jpg",
+    src2x: "/photos/almaty-kabanbay-1200.jpg",
+    alt: "Филиал IdeaLab в Алматы, ул. Кабанбай Батыра 111 (здание Neuromed)",
+  },
+  karaganda: {
+    src: "/photos/karaganda-stepnoy-600.jpg",
+    src2x: "/photos/karaganda-stepnoy-1200.jpg",
+    alt: "Филиал IdeaLab в Караганде, мкр. Степной-2 18/1",
+  },
+  temirtau: {
+    src: "/photos/temirtau-mira-600.jpg",
+    src2x: "/photos/temirtau-mira-1200.jpg",
+    alt: "Филиал IdeaLab в Темиртау, пр. Мира 114",
+  },
+};
+---
+
+<!-- HERO -->
+<section class="bg-mist border-b border-rule">
+  <div class="container-x py-12 lg:py-16">
+    <a href={lp("/")} class="text-[13px] text-ink-400 hover:text-brand-700 inline-flex items-center gap-1 mb-6">{s.common.back_home}</a>
+    <h1 class="mb-5">{s.locations_page.title}</h1>
+    <p class="lede max-w-prose">{s.locations_page.lede}</p>
+  </div>
+</section>
+
+<!-- LOCATIONS DETAILED CARDS -->
+<section class="container-x py-12 lg:py-20 space-y-10 lg:space-y-14">
+  {
+    s.locations_preview.cities.map((c) => (
+      <div id={c.slug} class="reveal scroll-mt-32">
+        <div class="grid lg:grid-cols-[1.5fr_1fr] gap-6 lg:gap-10 bg-white rounded-3xl border border-rule shadow-card overflow-hidden">
+          <!-- Left: text -->
+          <div class="p-8 lg:p-10">
+            <h2 class="mb-1">{c.city}</h2>
+            <div class="text-brand-700 text-[14px] font-semibold mb-6">{c.hours}</div>
+
+            <div class="grid sm:grid-cols-2 gap-6">
+              <div>
+                <div class="text-[12px] uppercase tracking-wider text-ink-400 font-semibold mb-2">{s.locations_page.detail_address}</div>
+                <ul class="space-y-2 text-[15px] text-ink-900">
+                  {c.addresses.map((a) => <li>{a}</li>)}
+                </ul>
+                <div class="mt-3 flex gap-3 text-[13px]">
+                  <a href={mapLinks[c.slug].gis} target="_blank" rel="noopener" class="text-brand-700 hover:text-brand-800 underline-offset-2 hover:underline">2GIS →</a>
+                  <a href={mapLinks[c.slug].google} target="_blank" rel="noopener" class="text-brand-700 hover:text-brand-800 underline-offset-2 hover:underline">Google Maps →</a>
+                </div>
+              </div>
+
+              <div>
+                <div class="text-[12px] uppercase tracking-wider text-ink-400 font-semibold mb-2">{s.locations_page.detail_phone}</div>
+                <a href={`tel:${c.phone_label.replace(/[^+\d]/g, "")}`} class="block text-[16px] font-semibold text-ink-900 hover:text-brand-700">{c.phone_label}</a>
+
+                <div class="mt-5 text-[12px] uppercase tracking-wider text-ink-400 font-semibold mb-2">{s.locations_page.blood_draw_label}</div>
+                <ul class="space-y-1 text-[14px] text-ink-600">
+                  <li>{s.locations_page.blood_draw_clinic}</li>
+                  {c.slug === "astana" && <li>{s.locations_page.blood_draw_home}</li>}
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-rule">
+              <div class="text-[12px] uppercase tracking-wider text-ink-400 font-semibold mb-3">{s.locations_page.detail_services}</div>
+              <ul class="grid sm:grid-cols-2 gap-y-1.5 gap-x-4 text-[14px] text-ink-600">
+                {
+                  s.locations_page.services_offered.map((svc) => (
+                    <li class="flex items-start gap-2">
+                      <svg class="h-4 w-4 text-brand-500 mt-1 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      {svc}
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+
+          <!-- Real facade photo. Mobile: 16:9 ratio above text. Desktop: full-height right column. -->
+          <div class="relative bg-ink-900 aspect-[4/3] lg:aspect-auto order-first lg:order-none">
+            <img
+              src={cityPhoto[c.slug].src}
+              srcset={`${cityPhoto[c.slug].src} 1x, ${cityPhoto[c.slug].src2x} 2x`}
+              alt={cityPhoto[c.slug].alt}
+              class="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+    ))
+  }
+</section>
+
+<!-- CTA -->
+<section class="container-x pb-16 lg:pb-24">
+  <div class="card p-8 lg:p-12 text-center reveal">
+    <h3 class="mb-3">{s.contact_cta.title}</h3>
+    <p class="text-ink-600 mb-6 max-w-prose mx-auto">{s.contact_cta.body}</p>
+    <div class="flex flex-wrap gap-3 justify-center">
+      <button type="button" id="loc-chat" class="btn-primary">{s.contact_cta.cta_chat}</button>
+      <a href="tel:+77024786568" class="btn-ghost">{s.contact_cta.cta_call}</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.getElementById("loc-chat")?.addEventListener("click", () => {
+    (document.getElementById("sm-toggle") as HTMLButtonElement | null)?.click();
+  });
+</script>
