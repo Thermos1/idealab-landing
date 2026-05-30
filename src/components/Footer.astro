@@ -14,11 +14,22 @@ function lp(target: string): string {
 }
 
 const year = new Date().getFullYear();
+
+// Brand strings — verbatim from idealab.kz footer
+const ru = locale === "ru";
+const companyLabel = ru ? "Компания" : "Компания";
+const companyName = "ТОО «НИИ Аллергоскрин»";
+const legalAddrLabel = ru ? "Адрес" : "Мекенжай";
+const legalAddr = ru
+  ? "г. Астана, ул. генерал С.Рақымов, 22"
+  : "Астана қ., генерал С.Рақымов к-сі, 22";
+const socialsLabel = ru ? "Социальные сети" : "Әлеуметтік желілер";
+const pagesLabel = ru ? "Страницы" : "Беттер";
 ---
 
 <footer class="bg-ink-900 text-white/85 mt-24">
   <div class="container-x py-14 lg:py-16">
-    <!-- Top: brand + tagline -->
+    <!-- Top: brand + tagline + Bregis CTA -->
     <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
       <div>
         <a href={lp("/")} class="inline-flex items-center gap-3">
@@ -30,7 +41,7 @@ const year = new Date().getFullYear();
             height="43"
             class="h-12 w-auto bg-white rounded-lg p-1.5 shadow-sm"
           />
-          <span class="font-display font-bold text-[22px] tracking-tight text-white uppercase">IdeaLab</span>
+          <span class="font-display font-bold text-[22px] tracking-tight text-white">IdeaLab.kz</span>
         </a>
         <p class="mt-4 max-w-prose text-white/65 text-[15px] leading-relaxed">{s.footer.tagline}</p>
       </div>
@@ -44,65 +55,65 @@ const year = new Date().getFullYear();
       </a>
     </div>
 
-    <!-- 4 columns (1 col on tiny phones, 2 on small, 4 on desktop) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-      <!-- Lab -->
+    <!-- 3 columns: Pages / Company / Socials (idealab.kz pattern) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+      <!-- Pages -->
       <div>
-        <h4 class="text-white font-display font-semibold text-base mb-4">{s.footer.col_company}</h4>
+        <h4 class="text-white font-display font-semibold text-base mb-4">{pagesLabel}</h4>
         <ul class="space-y-2.5 text-[14px]">
-          <li><a href={lp("/services")} class="text-white/65 hover:text-brand-300">{s.footer.links.services}</a></li>
-          <li><a href={lp("/locations")} class="text-white/65 hover:text-brand-300">{s.footer.links.locations}</a></li>
-          <li><a href={lp("/about")} class="text-white/65 hover:text-brand-300">{s.footer.links.about}</a></li>        </ul>
-      </div>
-
-      <!-- Patients -->
-      <div>
-        <h4 class="text-white font-display font-semibold text-base mb-4">{s.footer.col_patients}</h4>
-        <ul class="space-y-2.5 text-[14px]">
-          <li><a href="/preparation" class="text-white/65 hover:text-brand-300">{s.footer.links.preparation}</a></li>
-          <li><a href="/offer" class="text-white/65 hover:text-brand-300">{s.footer.links.offer}</a></li>
-          <li><a href="/consent" class="text-white/65 hover:text-brand-300">{s.footer.links.consent}</a></li>
-          <li><a href="/complaints" class="text-white/65 hover:text-brand-300">{s.footer.links.complaints}</a></li>
-          <li><a href="/quality" class="text-white/65 hover:text-brand-300">{s.footer.links.quality}</a></li>
-          <li><a href="/privacy" class="text-white/65 hover:text-brand-300">{s.footer.links.privacy}</a></li>
+          <li><a href={lp("/")} class="text-white/65 hover:text-brand-300">{s.nav.home}</a></li>
+          <li><a href={lp("/services")} class="text-white/65 hover:text-brand-300">{s.nav.services}</a></li>
+          <li><a href={lp("/locations")} class="text-white/65 hover:text-brand-300">{s.nav.locations}</a></li>
+          <li><a href={lp("/license")} class="text-white/65 hover:text-brand-300">{ru ? "Лицензия" : "Лицензия"}</a></li>
+          <li><a href="/offer" class="text-white/65 hover:text-brand-300">{ru ? "Публичная оферта" : "Жария оферта"}</a></li>
+          <li><a href="/preparation" class="text-white/65 hover:text-brand-300">{ru ? "Подготовка" : "Дайындық"}</a></li>
         </ul>
       </div>
 
-      <!-- OSMS -->
+      <!-- Company info — verbatim from idealab.kz footer -->
       <div>
-        <h4 class="text-white font-display font-semibold text-base mb-4">{s.footer.col_osms}</h4>
-        <ul class="space-y-2.5 text-[14px]">          <li>
-            <a href="https://allergoscreen.bregis.kz/" target="_blank" rel="noopener" class="text-white/65 hover:text-brand-300">
-              {s.footer.links.results_portal} →
+        <h4 class="text-white font-display font-semibold text-base mb-4">{companyLabel}</h4>
+        <div class="text-[14px] text-white/65 leading-relaxed space-y-1">
+          <div class="text-white">{companyName}</div>
+          <div><span class="text-white/45">{legalAddrLabel}:</span> {legalAddr}</div>
+          <div class="pt-3">
+            <a href="tel:+77004286568" class="text-white hover:text-brand-300 block">+7 (700) 428-65-68</a>
+            <a href="https://wa.me/77759893287" target="_blank" rel="noopener" class="text-white hover:text-brand-300 block">+7 (775) 989-32-87 <span class="text-white/45 text-[12px]">WhatsApp</span></a>
+            <a href="mailto:idealab.nii@gmail.com" class="text-white/65 hover:text-brand-300 block mt-1">idealab.nii@gmail.com</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Socials -->
+      <div>
+        <h4 class="text-white font-display font-semibold text-base mb-4">{socialsLabel}</h4>
+        <p class="text-[13.5px] text-white/55 mb-3 leading-relaxed">
+          {ru ? "Подпишитесь и следите за новостями в наших социальных сетях" : "Жазылыңыз және әлеуметтік желілеріміздегі жаңалықтарды бақылаңыз"}
+        </p>
+        <ul class="space-y-2.5 text-[14px]">
+          <li>
+            <a href="https://www.instagram.com/idealab.nii" target="_blank" rel="noopener" class="text-white/65 hover:text-brand-300 inline-flex items-center gap-2">
+              Instagram <span class="text-white/45">@idealab.nii</span>
             </a>
           </li>
-        </ul>
-      </div>
-
-      <!-- Contacts -->
-      <div>
-        <h4 class="text-white font-display font-semibold text-base mb-4">{s.footer.col_contacts}</h4>
-        <ul class="space-y-2.5 text-[14px]">
           <li>
-            <div class="text-white/45 text-[12px] uppercase tracking-wider">{s.footer.contacts_label_phone}</div>
-            <a href="tel:+77024786568" class="text-white hover:text-brand-300">+7 702 478 65 68</a>
+            <a href="https://www.youtube.com/@IdeaLab_nii" target="_blank" rel="noopener" class="text-white/65 hover:text-brand-300 inline-flex items-center gap-2">
+              YouTube <span class="text-white/45">@IdeaLab_nii</span>
+            </a>
           </li>
           <li>
-            <div class="text-white/45 text-[12px] uppercase tracking-wider">{s.footer.contacts_label_whatsapp}</div>
-            <a href="https://wa.me/77759893287" target="_blank" rel="noopener" class="text-white hover:text-brand-300">+7 775 989 32 87</a>
-          </li>
-          <li>
-            <div class="text-white/45 text-[12px] uppercase tracking-wider">{s.footer.contacts_label_instagram}</div>
-            <a href="https://www.instagram.com/allergoscreen" target="_blank" rel="noopener" class="text-white hover:text-brand-300">@allergoscreen</a>
+            <a href="https://wa.me/77759893287" target="_blank" rel="noopener" class="text-white/65 hover:text-brand-300 inline-flex items-center gap-2">
+              WhatsApp <span class="text-white/45">+7 (775) 989-32-87</span>
+            </a>
           </li>
         </ul>
       </div>
     </div>
 
-    <!-- Bottom: copyright + license -->
+    <!-- Bottom: copyright + БИН -->
     <div class="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between text-[12px] text-white/45 leading-relaxed">
-      <div>{year} {s.footer.copyright}</div>
-      <div class="sm:text-right max-w-md">{s.footer.license_note}</div>
+      <div>© {year} {companyName} · БИН 211140010036</div>
+      <div class="sm:text-right">{ru ? "Все права защищены" : "Барлық құқықтар қорғалған"}</div>
     </div>
   </div>
 </footer>
