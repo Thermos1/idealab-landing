@@ -83,6 +83,50 @@ const serviceIconKeys = [
 </section>
 
 <!-- ========================================================================== -->
+<!-- QUICK LINKS (4 cards from idealab.kz home) -->
+<!-- ========================================================================== -->
+<section class="container-x -mt-10 lg:-mt-14 relative z-10">
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
+    <a href={lp("/services")} class="reveal card-hover p-6 lg:p-7 flex gap-4 group bg-white">
+      <div class="h-11 w-11 rounded-lg bg-brand-50 text-brand-700 inline-flex items-center justify-center flex-shrink-0">
+        <span class="inline-flex h-5 w-5" set:html={icons.flask} />
+      </div>
+      <div>
+        <h3 class="text-[17px] mb-1 group-hover:text-brand-700 transition">{locale === "ru" ? "Список анализов" : "Талдаулар тізімі"}</h3>
+        <p class="text-ink-600 text-[13.5px] leading-relaxed">{locale === "ru" ? "Перечень выполняемых исследований лаборатории." : "Зертхана орындайтын зерттеулердің тізбесі."}</p>
+      </div>
+    </a>
+    <a href={lp("/locations")} class="reveal card-hover p-6 lg:p-7 flex gap-4 group bg-white">
+      <div class="h-11 w-11 rounded-lg bg-brand-50 text-brand-700 inline-flex items-center justify-center flex-shrink-0">
+        <span class="inline-flex h-5 w-5" set:html={icons.pin} />
+      </div>
+      <div>
+        <h3 class="text-[17px] mb-1 group-hover:text-brand-700 transition">{locale === "ru" ? "Пункты забора" : "Қан алу пункттері"}</h3>
+        <p class="text-ink-600 text-[13.5px] leading-relaxed">{locale === "ru" ? "Пункты забора на карте и контакты." : "Қан алу пункттері картада және байланыс."}</p>
+      </div>
+    </a>
+    <button type="button" id="quicklink-chat" class="reveal card-hover p-6 lg:p-7 flex gap-4 group bg-white text-left">
+      <div class="h-11 w-11 rounded-lg bg-brand-50 text-brand-700 inline-flex items-center justify-center flex-shrink-0">
+        <span class="inline-flex h-5 w-5" set:html={icons.chat} />
+      </div>
+      <div>
+        <h3 class="text-[17px] mb-1 group-hover:text-brand-700 transition">{locale === "ru" ? "Написать нам" : "Бізге жазу"}</h3>
+        <p class="text-ink-600 text-[13.5px] leading-relaxed">{locale === "ru" ? "Возникли вопросы? Напишите нам в WhatsApp." : "Сұрақтарыңыз бар ма? WhatsApp арқылы бізге жазыңыз."}</p>
+      </div>
+    </button>
+    <a href={lp("/results")} class="reveal card-hover p-6 lg:p-7 flex gap-4 group bg-white">
+      <div class="h-11 w-11 rounded-lg bg-brand-50 text-brand-700 inline-flex items-center justify-center flex-shrink-0">
+        <span class="inline-flex h-5 w-5" set:html={icons.certificate} />
+      </div>
+      <div>
+        <h3 class="text-[17px] mb-1 group-hover:text-brand-700 transition">{locale === "ru" ? "Получить результаты" : "Нәтижелерді алу"}</h3>
+        <p class="text-ink-600 text-[13.5px] leading-relaxed">{locale === "ru" ? "Переходите в личный кабинет и смотрите анализы онлайн." : "Жеке кабинетке өтіп, талдаулардың нәтижелерін онлайн қараңыз."}</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ========================================================================== -->
 <!-- USP -->
 <!-- ========================================================================== -->
 <section class="container-x py-16 lg:py-24">
@@ -90,7 +134,7 @@ const serviceIconKeys = [
   <div class="mt-10 lg:mt-12 grid sm:grid-cols-2 gap-4 lg:gap-6">
     {
       s.usp.items.map((item, i) => {
-        const iconKey = (["flask", "dna", "certificate", "shield"] as const)[i];
+        const iconKey = (["shield", "certificate", "flask"] as const)[i];
         return (
           <div class="reveal card p-6 lg:p-7 flex gap-5">
             <div class="flex-shrink-0">
@@ -219,7 +263,7 @@ const serviceIconKeys = [
             <span class="inline-flex h-4 w-4" set:html={icons.chat} />
             {s.contact_cta.cta_chat}
           </button>
-          <a href="tel:+77024786568" class="btn-ghost !bg-white lg:w-full justify-center">
+          <a href="tel:+77004286568" class="btn-ghost !bg-white lg:w-full justify-center">
             <span class="inline-flex h-4 w-4" set:html={icons.phone} />
             {s.contact_cta.cta_call}
           </a>
@@ -237,4 +281,5 @@ const serviceIconKeys = [
   }
   document.getElementById("hero-chat-cta")?.addEventListener("click", openWidget);
   document.getElementById("cta-chat")?.addEventListener("click", openWidget);
+  document.getElementById("quicklink-chat")?.addEventListener("click", openWidget);
 </script>

@@ -29,24 +29,6 @@ function lp(target: string): string {
   </div>
 </section>
 
-<!-- ========== CATEGORY FILTER (chips) ========== -->
-<section class="sticky top-16 lg:top-[72px] z-30 bg-white/95 backdrop-blur border-b border-rule">
-  <div class="container-x py-3 flex items-center gap-2 overflow-x-auto">
-    <span class="text-[12px] uppercase tracking-wider text-ink-400 font-semibold whitespace-nowrap pr-2 border-r border-rule">{s.services_page.filter_label}</span>
-    {
-      s.services_page.filters.map((f, i) => (
-        <a
-          href={`#cat-${f.id}`}
-          data-cat-link={f.id}
-          class={`whitespace-nowrap px-3 py-1.5 rounded-full text-[13px] font-semibold transition ${i === 0 ? "bg-brand text-white" : "bg-mist text-ink-600 hover:bg-brand-100 hover:text-brand-700"}`}
-        >
-          {f.label}
-        </a>
-      ))
-    }
-  </div>
-</section>
-
 <!-- ========== PRICE SECTIONS ========== -->
 <section class="container-x py-12 lg:py-16 space-y-12 lg:space-y-16">
   {
@@ -111,29 +93,3 @@ function lp(target: string): string {
   }
 </section>
 
-<script>
-  // Highlight active category chip on scroll
-  const links = document.querySelectorAll<HTMLAnchorElement>("[data-cat-link]");
-  const sections = document.querySelectorAll<HTMLElement>("[id^=cat-]");
-  if (links.length && sections.length && "IntersectionObserver" in window) {
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const id = entry.target.id.replace(/^cat-/, "");
-            links.forEach((l) => {
-              const active = l.dataset.catLink === id;
-              l.classList.toggle("bg-brand", active);
-              l.classList.toggle("text-white", active);
-              l.classList.toggle("bg-mist", !active);
-              l.classList.toggle("text-ink-600", !active);
-            });
-            break;
-          }
-        }
-      },
-      { rootMargin: "-30% 0px -50% 0px", threshold: 0 },
-    );
-    sections.forEach((s) => io.observe(s));
-  }
-</script>

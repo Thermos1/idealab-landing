@@ -38,7 +38,6 @@ export const SECTIONS: Section[] = [
         price: 6500,
         unit: "per_allergen",
         city_variance: { karaganda: 6000, temirtau: 6000 },
-        osms: true,
       },
       {
         code: "IgE спец.",
@@ -50,7 +49,6 @@ export const SECTIONS: Section[] = [
         price: 6500,
         unit: "per_allergen",
         city_variance: { karaganda: 6000, temirtau: 6000 },
-        osms: true,
       },
       {
         code: "IgE общ.",
@@ -60,7 +58,6 @@ export const SECTIONS: Section[] = [
           en: "General IgE — initial diagnostics",
         },
         price: 3000,
-        osms: true,
       },
       {
         code: "ALEX-300",
