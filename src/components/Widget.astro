@@ -144,7 +144,7 @@ const w = t(locale).widget;
       }
       appendBubble("assistant", welcomeText, false);
       // CRITICAL: push welcome into history so the next user turn is seen
-      // by the model as a follow-up — otherwise Дима's "greet-first" rule
+      // by the model as a follow-up — otherwise the bot's "greet-first" rule
       // re-fires and he ignores the user's actual question.
       history.push({ role: "assistant", content: welcomeText });
     }
@@ -166,7 +166,7 @@ const w = t(locale).widget;
     // Proactive teaser — 22s after load, desktop only, sticky-dismiss
     const teaser = document.getElementById("sm-teaser");
     const teaserClose = document.getElementById("sm-teaser-close");
-    const TEASER_KEY = "allergoscreen-teaser-dismissed";
+    const TEASER_KEY = "idealab-teaser-dismissed";
     const isMobile = window.matchMedia("(max-width: 640px)").matches;
     const dismissed = localStorage.getItem(TEASER_KEY) === "1";
 
