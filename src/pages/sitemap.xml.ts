@@ -8,9 +8,7 @@ export const prerender = false;
 
 const SITE = (process.env.PUBLIC_SITE_URL || "https://www.idealab.kz").replace(/\/$/, "");
 
-// All canonical paths + which locales they exist in.
-// Legal pages (offer/consent/preparation) exist in ru + kk only.
-// All other content pages exist in all 3 locales.
+// 6 canonical pages — match idealab.kz nav exactly.
 const PAGES: { path: string; locales: ("ru" | "kk")[]; priority: number; changefreq: string }[] = [
   { path: "/", locales: ["ru", "kk"], priority: 1.0, changefreq: "weekly" },
   { path: "/services", locales: ["ru", "kk"], priority: 0.9, changefreq: "monthly" },
@@ -18,10 +16,6 @@ const PAGES: { path: string; locales: ("ru" | "kk")[]; priority: number; changef
   { path: "/license", locales: ["ru", "kk"], priority: 0.7, changefreq: "yearly" },
   { path: "/preparation", locales: ["ru", "kk"], priority: 0.7, changefreq: "yearly" },
   { path: "/offer", locales: ["ru", "kk"], priority: 0.4, changefreq: "yearly" },
-  { path: "/consent", locales: ["ru", "kk"], priority: 0.4, changefreq: "yearly" },
-  { path: "/privacy", locales: ["ru"], priority: 0.3, changefreq: "yearly" },
-  { path: "/complaints", locales: ["ru"], priority: 0.3, changefreq: "yearly" },
-  { path: "/quality", locales: ["ru"], priority: 0.3, changefreq: "yearly" },
 ];
 
 function localizedUrl(path: string, locale: string): string {
