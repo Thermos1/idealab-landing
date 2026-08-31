@@ -409,7 +409,7 @@ const ru: Strings = {
       {
         slug: "karaganda",
         city: "Караганда",
-        addresses: ["ул. Абая, 3", "мкр. Степной, 18/1"],
+        addresses: ["мкр. Степной, 18/1"],
         hours: "",
         phone_label: "+7 (700) 428-65-68",
       },
@@ -764,7 +764,7 @@ const kk: Strings = {
       {
         slug: "karaganda",
         city: "Қарағанды",
-        addresses: ["Абай к-сі, 3", "Степной ы/а, 18/1"],
+        addresses: ["Степной ы/а, 18/1"],
         hours: "",
         phone_label: "+7 (700) 428-65-68",
       },
