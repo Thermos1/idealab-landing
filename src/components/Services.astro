@@ -20,7 +20,19 @@ function lp(target: string): string {
   return `/${locale}${target === "/" ? "" : target}`;
 }
 
-const daysHeader = locale === "ru" ? "сроки, дн" : "мерзімі, күн";
+const daysHeader = locale === "ru" ? "Срок, дн" : "Мерзімі, күн";
+
+// The first section of each category carries the chip's anchor (several sections share a category).
+const firstOfCategory = new Set<string>();
+const anchorFor = (cat: string) => {
+  if (firstOfCategory.has(cat)) return undefined;
+  firstOfCategory.add(cat);
+  return `cat-${cat}`;
+};
+// What the search box matches: code + the row's name in both languages (a Kazakh visitor
+// may type the Russian name a doctor wrote on the referral).
+const searchText = (row: (typeof SECTIONS)[number]["rows"][number]) =>
+  [row.code, row.name.ru, row.name.kk].join(" ").toLowerCase().replace(/ё/g, "е");
 ---
 
 <!-- ========== HERO ========== -->
@@ -32,45 +44,78 @@ const daysHeader = locale === "ru" ? "сроки, дн" : "мерзімі, кү�
   </div>
 </section>
 
+<!-- ========== SEARCH + CATEGORY CHIPS ========== -->
+<section class="sticky top-16 lg:top-[72px] z-30 bg-white/95 backdrop-blur border-b border-rule">
+  <div class="container-x pt-3">
+    <label class="relative block max-w-md">
+      <span class="sr-only">{s.services_page.search_placeholder}</span>
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-ink-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+      <input
+        id="price-search"
+        type="search"
+        autocomplete="off"
+        placeholder={s.services_page.search_placeholder}
+        class="w-full rounded-full border border-rule bg-mist pl-9 pr-4 py-2 text-[14px] text-ink-900 placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-brand-300 focus:bg-white"
+      />
+    </label>
+  </div>
+  <div class="container-x py-3 flex items-center gap-2 overflow-x-auto">
+    <span class="text-[12px] uppercase tracking-wider text-ink-400 font-semibold whitespace-nowrap pr-2 border-r border-rule">{s.services_page.filter_label}</span>
+    {
+      s.services_page.filters.map((f, i) => (
+        <a
+          href={`#cat-${f.id}`}
+          data-cat-link={f.id}
+          class={`whitespace-nowrap px-3 py-1.5 rounded-full text-[13px] font-semibold transition ${i === 0 ? "bg-brand text-white" : "bg-mist text-ink-600 hover:bg-brand-100 hover:text-brand-700"}`}
+        >
+          {f.label}
+        </a>
+      ))
+    }
+  </div>
+</section>
+
 <!-- ========== PRICE SECTIONS ========== -->
 <section class="container-x py-12 lg:py-16 space-y-12 lg:space-y-16">
+  <p id="price-search-empty" hidden class="text-[15px] text-ink-600 bg-mist rounded-2xl p-6">{s.services_page.search_empty}</p>
   {
     SECTIONS.map((sec) => {
       const subtitle = getSectionSubtitle(sec, locale);
       return (
-        <div id={`cat-${sec.category}`} class="reveal">
+        <div id={anchorFor(sec.category)} data-price-section={sec.category} class="reveal scroll-mt-48">
           <h2 class="mb-2 lg:mb-3" id={sec.id}>{getSectionTitle(sec, locale)}</h2>
-          {subtitle && (
-            <p class="text-[14px] text-ink-600 mb-6 lg:mb-8 max-w-prose">{subtitle}</p>
-          )}
+          {subtitle && <p class="text-[14px] text-ink-600 max-w-prose">{subtitle}</p>}
 
-          <div class="card overflow-x-auto -mx-4 sm:mx-0 sm:rounded-2xl">
-            <table class="w-full text-[14px] sm:text-[14.5px] min-w-[640px]">
+          <div class="card overflow-x-auto sm:rounded-2xl mt-6 lg:mt-8">
+            <table class="w-full text-[14px] sm:text-[14.5px] sm:min-w-[640px]">
               <thead class="bg-mist border-b border-rule">
                 <tr class="text-left text-[11px] sm:text-[12px] uppercase tracking-wider text-ink-400 font-semibold">
-                  <th class="px-3 sm:px-4 py-3 w-[15%] min-w-[72px]">{s.services_page.table_header.code}</th>
+                  <th class="hidden sm:table-cell px-3 sm:px-4 py-3 w-[14%] min-w-[72px]">{s.services_page.table_header.code}</th>
                   <th class="px-3 sm:px-4 py-3">{s.services_page.table_header.name}</th>
-                  <th class="px-3 sm:px-4 py-3 w-[14%] min-w-[80px] text-center">{daysHeader}</th>
-                  <th class="px-3 sm:px-4 py-3 text-right w-[18%] min-w-[110px]">{s.services_page.table_header.price}</th>
+                  <th class="hidden sm:table-cell px-3 sm:px-4 py-3 w-[13%] min-w-[90px] text-center">{daysHeader}</th>
+                  <th class="px-3 sm:px-4 py-3 text-right w-[18%] sm:min-w-[110px]">{s.services_page.table_header.price}</th>
                 </tr>
               </thead>
               <tbody>
                 {
                   sec.rows.map((row, i) => {
                     const notes = getNotes(row, locale);
+                    const days = row.days && row.days !== "—" ? row.days : undefined;
                     return (
-                      <tr class={i % 2 === 0 ? "" : "bg-mist/50"}>
-                        <td class="px-3 sm:px-4 py-3 sm:py-3.5 align-top">
+                      <tr class={i % 2 === 0 ? "" : "bg-mist/50"} data-search={searchText(row)}>
+                        <td class="hidden sm:table-cell px-3 sm:px-4 py-3 sm:py-3.5 align-top">
                           <span class="font-mono text-[12px] sm:text-[12.5px] text-brand-700 font-semibold whitespace-nowrap">{row.code}</span>
                         </td>
                         <td class="px-3 sm:px-4 py-3 sm:py-3.5 align-top">
                           <div class="text-ink-900 font-medium leading-snug">{getRowName(row, locale)}</div>
-                          {notes && (
-                            <div class="text-[12px] text-ink-400 mt-1">{notes}</div>
-                          )}
+                          <div class="flex flex-wrap gap-x-3 gap-y-1 mt-1.5 empty:hidden">
+                            {row.code !== "—" && <span class="sm:hidden font-mono text-[11.5px] text-brand-700 font-semibold">{row.code}</span>}
+                            {days && <span class="sm:hidden text-[12px] text-ink-400">{daysHeader.toLowerCase()}: {days}</span>}
+                            {notes && <span class="text-[12px] text-ink-400">{notes}</span>}
+                          </div>
                         </td>
-                        <td class="px-3 sm:px-4 py-3 sm:py-3.5 align-top text-center text-[13px] text-ink-600 whitespace-nowrap">
-                          {row.days || "—"}
+                        <td class="hidden sm:table-cell px-3 sm:px-4 py-3 sm:py-3.5 align-top text-center text-[13px] text-ink-600 whitespace-nowrap">
+                          {days || "—"}
                         </td>
                         <td class="px-3 sm:px-4 py-3 sm:py-3.5 align-top text-right whitespace-nowrap">
                           <div class="font-display font-bold text-ink-900 text-[15px] sm:text-[16px] leading-none">
@@ -88,4 +133,63 @@ const daysHeader = locale === "ru" ? "сроки, дн" : "мерзімі, кү�
       );
     })
   }
+  <p class="text-[13px] text-ink-400 max-w-prose">{s.services_page.footnote}</p>
 </section>
+
+<script>
+  // Highlight active category chip on scroll
+  const links = document.querySelectorAll<HTMLAnchorElement>("[data-cat-link]");
+  const sections = document.querySelectorAll<HTMLElement>("[data-price-section]");
+  if (links.length && sections.length && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const id = (entry.target as HTMLElement).dataset.priceSection;
+            if (!document.querySelector(`[data-cat-link="${id}"]`)) break;
+            links.forEach((l) => {
+              const active = l.dataset.catLink === id;
+              l.classList.toggle("bg-brand", active);
+              l.classList.toggle("text-white", active);
+              l.classList.toggle("bg-mist", !active);
+              l.classList.toggle("text-ink-600", !active);
+            });
+            break;
+          }
+        }
+      },
+      { rootMargin: "-30% 0px -50% 0px", threshold: 0 },
+    );
+    sections.forEach((s) => io.observe(s));
+  }
+
+  // Search: hide rows that do not match, hide sections left empty.
+  const search = document.getElementById("price-search") as HTMLInputElement | null;
+  const empty = document.getElementById("price-search-empty");
+  if (search) {
+    search.addEventListener("input", () => {
+      const terms = search.value.toLowerCase().replace(/ё/g, "е").split(/\s+/).filter(Boolean);
+      let shown = 0;
+      sections.forEach((sec) => {
+        let inSection = 0;
+        sec.querySelectorAll<HTMLTableRowElement>("tr[data-search]").forEach((tr) => {
+          const hay = tr.dataset.search || "";
+          const ok = terms.every((t) => hay.includes(t));
+          tr.hidden = !ok;
+          if (ok) inSection++;
+        });
+        sec.hidden = inSection === 0;
+        // A revealed-on-scroll block must not stay invisible once search brings it back.
+        if (inSection) sec.classList.add("is-visible");
+        shown += inSection;
+      });
+      if (empty) empty.hidden = shown > 0;
+    });
+    // Links from the home page's directions open the list already filtered (?q=…).
+    const q = new URLSearchParams(location.search).get("q");
+    if (q) {
+      search.value = q;
+      search.dispatchEvent(new Event("input"));
+    }
+  }
+</script>

@@ -1,6 +1,7 @@
 ---
 // Homepage sections shared across all 3 locales.
-import { t, type Locale } from "../i18n/ui";
+import { t, type Locale, VOICE_ASSISTANT_PHONE, VOICE_ASSISTANT_WHATSAPP, RESULTS_URL, telHref, waHref } from "../i18n/ui";
+import { SECTIONS } from "../data/prices";
 
 interface Props {
   locale: Locale;
@@ -33,221 +34,263 @@ const icons = {
   chat: '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>',
 };
 
-const serviceIconKeys = [
-  "microscope", "pill", "drop", "spray", "sparkle", "apple", "leaf", "paw", "dna",
-] as const;
+const totalTests = SECTIONS.reduce((n, sec) => n + sec.rows.length, 0);
+const methodImg = ["/brand/method-nrif", "/brand/method-immunoblot", "/brand/method-ifa"];
+const photoMap = {
+  astana: { src: "/photos/astana-baitursynova-600.jpg", src2x: "/photos/astana-baitursynova-1200.jpg" },
+  almaty: { src: "/photos/almaty-kabanbay-600.jpg", src2x: "/photos/almaty-kabanbay-1200.jpg" },
+  karaganda: { src: "/photos/karaganda-stepnoy-600.jpg", src2x: "/photos/karaganda-stepnoy-1200.jpg" },
+  temirtau: { src: "/photos/temirtau-mira-600.jpg", src2x: "/photos/temirtau-mira-1200.jpg" },
+  shymkent: { src: "/photos/shymkent-akpan-600.jpg", src2x: "/photos/shymkent-akpan-1200.jpg" },
+};
+const ru = locale === "ru";
 ---
 
 <!-- ========================================================================== -->
-<!-- HERO -->
+<!-- HERO: the lab's subject is the headline; the illustration from the old site on the right -->
 <!-- ========================================================================== -->
 <section class="relative overflow-hidden bg-mist">
   <div class="absolute inset-0 bg-grid bg-grid-fade opacity-70 pointer-events-none"></div>
-  <div class="absolute top-0 right-0 -translate-y-1/4 translate-x-1/4 w-[600px] h-[600px] rounded-full bg-brand-100/40 blur-3xl pointer-events-none"></div>
-  <div class="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/4 w-[500px] h-[500px] rounded-full bg-gold-50 blur-3xl pointer-events-none"></div>
-
-  <div class="container-x relative pt-12 pb-16 lg:pt-20 lg:pb-24">
-    <div class="max-w-narrow">
-      <!-- Left -->
+  <div class="container-x relative pt-10 pb-20 lg:pt-16 lg:pb-28">
+    <div class="grid lg:grid-cols-[1.15fr_1fr] gap-10 lg:gap-12 items-center">
       <div class="reveal">
-        <div class="eyebrow mb-5 inline-flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-brand-100">
-          <span class="h-1.5 w-1.5 rounded-full bg-brand"></span>
-          {s.hero.eyebrow}
-        </div>
+        <div class="eyebrow mb-5">{s.hero.eyebrow}</div>
         <h1 class="break-words">
-          {s.hero.h1_lead} <span class="text-crimson-500">{s.hero.h1_accent}</span><span class="text-ink-400 font-medium block mt-1 text-[22px] sm:text-3xl md:text-4xl lg:text-[44px] leading-snug" style="letter-spacing: -0.01em;">— {s.hero.h1_tail}</span>
+          {s.hero.h1_lead} <span class="text-brand-700">{s.hero.h1_accent}</span> {s.hero.h1_tail}
         </h1>
-        <p class="lede mt-6">{s.hero.lede}</p>
-
+        <p class="lede mt-6 max-w-prose">{s.hero.lede}</p>
         <div class="mt-8 flex flex-wrap gap-3">
           <a href={lp("/services")} class="btn-primary">
             {s.hero.cta_primary}
-            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.4">
-              <path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
-          <a href="https://wa.me/77759893287" target="_blank" rel="noopener" class="btn-ghost">
+          <a href={waHref(VOICE_ASSISTANT_WHATSAPP)} target="_blank" rel="noopener" class="btn-ghost">
             <span class="inline-flex h-4 w-4" set:html={icons.chat} />
             {s.hero.cta_secondary}
           </a>
         </div>
-
       </div>
-
+      <div class="reveal hidden sm:block">
+        <img
+          src="/brand/hero-illustration-600.png"
+          srcset="/brand/hero-illustration-600.png 1x, /brand/hero-illustration-1200.png 2x"
+          alt={s.home.hero_img_alt}
+          class="w-full max-w-[520px] mx-auto"
+          width="600"
+          height="600"
+        />
       </div>
+    </div>
   </div>
 </section>
 
 <!-- ========================================================================== -->
-<!-- QUICK LINKS (4 cards from idealab.kz home) -->
+<!-- QUICK LINKS (the 4 cards from idealab.kz home) -->
 <!-- ========================================================================== -->
-<section class="container-x -mt-10 lg:-mt-14 relative z-10">
+<section class="container-x -mt-12 lg:-mt-14 relative z-10">
   <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
     <a href={lp("/services")} class="reveal card-hover p-6 lg:p-7 flex gap-4 group bg-white">
-      <div class="h-11 w-11 rounded-lg bg-brand-50 text-brand-700 inline-flex items-center justify-center flex-shrink-0">
-        <span class="inline-flex h-5 w-5" set:html={icons.flask} />
-      </div>
+      <div class="h-11 w-11 rounded-lg bg-brand-50 text-brand-700 inline-flex items-center justify-center flex-shrink-0"><span class="inline-flex h-5 w-5" set:html={icons.flask} /></div>
       <div>
-        <h3 class="text-[17px] mb-1 group-hover:text-brand-700 transition">{locale === "ru" ? "Список анализов" : "Талдаулар тізімі"}</h3>
-        <p class="text-ink-600 text-[13.5px] leading-relaxed">{locale === "ru" ? "Перечень выполняемых исследований лаборатории." : "Зертхана орындайтын зерттеулердің тізбесі."}</p>
+        <h3 class="text-[17px] mb-1 group-hover:text-brand-700 transition">{ru ? "Список анализов" : "Талдаулар тізімі"}</h3>
+        <p class="text-ink-600 text-[13.5px] leading-relaxed">{ru ? `${totalTests} исследований с ценами и сроками.` : `Бағасы мен мерзімі бар ${totalTests} зерттеу.`}</p>
       </div>
     </a>
     <a href={lp("/locations")} class="reveal card-hover p-6 lg:p-7 flex gap-4 group bg-white">
-      <div class="h-11 w-11 rounded-lg bg-brand-50 text-brand-700 inline-flex items-center justify-center flex-shrink-0">
-        <span class="inline-flex h-5 w-5" set:html={icons.pin} />
-      </div>
+      <div class="h-11 w-11 rounded-lg bg-brand-50 text-brand-700 inline-flex items-center justify-center flex-shrink-0"><span class="inline-flex h-5 w-5" set:html={icons.pin} /></div>
       <div>
-        <h3 class="text-[17px] mb-1 group-hover:text-brand-700 transition">{locale === "ru" ? "Пункты забора" : "Қан алу пункттері"}</h3>
-        <p class="text-ink-600 text-[13.5px] leading-relaxed">{locale === "ru" ? "Пункты забора на карте и контакты." : "Қан алу пункттері картада және байланыс."}</p>
+        <h3 class="text-[17px] mb-1 group-hover:text-brand-700 transition">{ru ? "Пункты забора" : "Қан алу пункттері"}</h3>
+        <p class="text-ink-600 text-[13.5px] leading-relaxed">{ru ? "5 городов: адреса, часы работы, 2ГИС." : "5 қала: мекенжайлар, жұмыс уақыты, 2ГИС."}</p>
       </div>
     </a>
-    <a href="https://wa.me/77759893287" target="_blank" rel="noopener" class="reveal card-hover p-6 lg:p-7 flex gap-4 group bg-white">
-      <div class="h-11 w-11 rounded-lg bg-brand-50 text-brand-700 inline-flex items-center justify-center flex-shrink-0">
-        <span class="inline-flex h-5 w-5" set:html={icons.chat} />
-      </div>
+    <a href={waHref(VOICE_ASSISTANT_WHATSAPP)} target="_blank" rel="noopener" class="reveal card-hover p-6 lg:p-7 flex gap-4 group bg-white">
+      <div class="h-11 w-11 rounded-lg bg-brand-50 text-brand-700 inline-flex items-center justify-center flex-shrink-0"><span class="inline-flex h-5 w-5" set:html={icons.chat} /></div>
       <div>
-        <h3 class="text-[17px] mb-1 group-hover:text-brand-700 transition">{locale === "ru" ? "Написать нам" : "Бізге жазу"}</h3>
-        <p class="text-ink-600 text-[13.5px] leading-relaxed">{locale === "ru" ? "Возникли вопросы? Напишите нам в WhatsApp." : "Сұрақтарыңыз бар ма? WhatsApp арқылы бізге жазыңыз."}</p>
+        <h3 class="text-[17px] mb-1 group-hover:text-brand-700 transition">{ru ? "Написать нам" : "Бізге жазу"}</h3>
+        <p class="text-ink-600 text-[13.5px] leading-relaxed">{ru ? "WhatsApp помощника — круглосуточно." : "Көмекшінің WhatsApp-ы — тәулік бойы."}</p>
       </div>
     </a>
-    <a href={lp("/results")} class="reveal card-hover p-6 lg:p-7 flex gap-4 group bg-white">
-      <div class="h-11 w-11 rounded-lg bg-brand-50 text-brand-700 inline-flex items-center justify-center flex-shrink-0">
-        <span class="inline-flex h-5 w-5" set:html={icons.certificate} />
-      </div>
+    <a href={RESULTS_URL} target="_blank" rel="noopener" class="reveal card-hover p-6 lg:p-7 flex gap-4 group bg-white">
+      <div class="h-11 w-11 rounded-lg bg-brand-50 text-brand-700 inline-flex items-center justify-center flex-shrink-0"><span class="inline-flex h-5 w-5" set:html={icons.certificate} /></div>
       <div>
-        <h3 class="text-[17px] mb-1 group-hover:text-brand-700 transition">{locale === "ru" ? "Получить результаты" : "Нәтижелерді алу"}</h3>
-        <p class="text-ink-600 text-[13.5px] leading-relaxed">{locale === "ru" ? "Переходите в личный кабинет и смотрите анализы онлайн." : "Жеке кабинетке өтіп, талдаулардың нәтижелерін онлайн қараңыз."}</p>
+        <h3 class="text-[17px] mb-1 group-hover:text-brand-700 transition">{ru ? "Получить результаты" : "Нәтижелерді алу"}</h3>
+        <p class="text-ink-600 text-[13.5px] leading-relaxed">{ru ? "Личный кабинет пациента — результаты онлайн." : "Пациенттің жеке кабинеті — нәтижелер онлайн."}</p>
       </div>
     </a>
+  </div>
+</section>
+
+<!-- ========================================================================== -->
+<!-- DIRECTIONS: what the lab tests, straight from its price list -->
+<!-- ========================================================================== -->
+<section class="container-x py-16 lg:py-24">
+  <div class="max-w-narrow mb-10 lg:mb-12 reveal">
+    <div class="eyebrow mb-3">{s.home.directions_eyebrow}</div>
+    <h2 class="mb-4">{s.home.directions_title}</h2>
+    <p class="lede">{s.home.directions_lede}</p>
+  </div>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+    {
+      s.home.directions.map((d) => (
+        <a href={`${lp("/services")}?q=${encodeURIComponent(d.q)}`} class="reveal card-hover p-6 group flex flex-col">
+          <h3 class="text-[18px] mb-2 group-hover:text-brand-700 transition">{d.title}</h3>
+          <p class="text-ink-600 text-[14.5px] leading-relaxed flex-1">{d.body}</p>
+          <span class="mt-4 text-[13px] font-semibold text-brand-700">{ru ? "Цены →" : "Бағалар →"}</span>
+        </a>
+      ))
+    }
+  </div>
+  <div class="mt-8 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 reveal">
+    <p class="text-ink-600 text-[15px] max-w-prose">{s.home.directions_more.replace("{n}", String(totalTests))}</p>
+    <a href={lp("/services")} class="btn-ghost whitespace-nowrap self-start sm:self-auto">{s.home.directions_cta}</a>
+  </div>
+</section>
+
+<!-- ========================================================================== -->
+<!-- METHODS (the three methods from the old site, with their illustrations) -->
+<!-- ========================================================================== -->
+<section class="bg-mist border-y border-rule py-16 lg:py-24">
+  <div class="container-x">
+    <div class="max-w-narrow mb-10 lg:mb-14 reveal">
+      <div class="eyebrow mb-3">{s.tech.eyebrow}</div>
+      <h2 class="mb-4">{s.tech.title}</h2>
+      <p class="lede">{s.tech.lede}</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-4 lg:gap-6">
+      {
+        [s.tech.imasa, s.tech.alex, s.tech.aia].map((tech, i) => (
+          <div class="reveal card overflow-hidden flex flex-col bg-white">
+            <img src={`${methodImg[i]}-400.jpg`} srcset={`${methodImg[i]}-400.jpg 1x, ${methodImg[i]}-800.jpg 2x`} alt={tech.title} class="w-full aspect-[4/3] object-cover" loading="lazy" />
+            <div class="p-6 lg:p-7">
+              <div class="text-[11px] uppercase tracking-[0.16em] font-bold text-brand-700 mb-2">{String(i + 1).padStart(2, "0")}</div>
+              <h3 class="text-[21px] mb-1.5">{tech.title}</h3>
+              <p class="text-brand-700 text-[13px] font-semibold mb-3">{tech.tagline}</p>
+              <p class="text-ink-600 text-[14.5px] leading-relaxed">{tech.body}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================================== -->
+<!-- HOW TO TAKE A TEST + results portal -->
+<!-- ========================================================================== -->
+<section class="container-x py-16 lg:py-24">
+  <div class="grid lg:grid-cols-[1fr_1.6fr] gap-10 lg:gap-16 items-start">
+    <div class="reveal">
+      <div class="eyebrow mb-3">{s.home.steps_eyebrow}</div>
+      <h2 class="mb-6">{s.home.steps_title}</h2>
+      <a href={RESULTS_URL} target="_blank" rel="noopener" class="btn-gold">
+        <span class="inline-flex h-4 w-4" set:html={icons.certificate} />
+        {s.home.results_cta}
+      </a>
+      <p class="mt-4 text-[14px] text-ink-600"><a href={lp("/preparation")} class="text-brand-700 hover:underline">{ru ? "Подготовка к анализам →" : "Талдауларға дайындық →"}</a></p>
+    </div>
+    <ol class="grid sm:grid-cols-2 gap-4">
+      {
+        s.home.steps.map((step, i) => (
+          <li class="reveal card p-6 flex gap-4">
+            <span class="h-8 w-8 flex-shrink-0 inline-flex items-center justify-center rounded-full bg-brand-50 text-brand-700 font-display font-bold text-[15px]">{i + 1}</span>
+            <div>
+              <h3 class="text-[17px] leading-snug">{step.title}</h3>
+              <p class="mt-1.5 text-ink-600 text-[14.5px] leading-relaxed">{step.body}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
   </div>
 </section>
 
 <!-- ========================================================================== -->
 <!-- USP -->
 <!-- ========================================================================== -->
-<section class="container-x py-16 lg:py-24">
+<section class="container-x pb-16 lg:pb-24">
   <h2 class="reveal max-w-narrow">{s.usp.title}</h2>
-  <div class="mt-10 lg:mt-12 grid sm:grid-cols-2 gap-4 lg:gap-6">
+  <div class="mt-10 lg:mt-12 grid md:grid-cols-3 gap-4 lg:gap-6">
     {
       s.usp.items.map((item, i) => {
         const iconKey = (["shield", "certificate", "flask"] as const)[i];
         return (
-          <div class="reveal card p-6 lg:p-7 flex gap-5">
-            <div class="flex-shrink-0">
-              <div class="h-11 w-11 rounded-lg bg-brand-50 text-brand-700 inline-flex items-center justify-center">
-                <span class="inline-flex h-5 w-5" set:html={icons[iconKey]} />
-              </div>
-            </div>
-            <div>
-              <h3 class="text-[18px] mb-2">{item.title}</h3>
-              <p class="text-ink-600 text-[15px] leading-relaxed">{item.body}</p>
-            </div>
+          <div class="reveal card p-6 lg:p-7">
+            <div class="h-11 w-11 rounded-lg bg-brand-50 text-brand-700 inline-flex items-center justify-center mb-4"><span class="inline-flex h-5 w-5" set:html={icons[iconKey]} /></div>
+            <h3 class="text-[18px] mb-2">{item.title}</h3>
+            <p class="text-ink-600 text-[15px] leading-relaxed">{item.body}</p>
           </div>
         );
       })
     }
   </div>
 </section>
-
-
-
-<!-- ========================================================================== -->
-<!-- TECHNOLOGY -->
-<!-- ========================================================================== -->
-<section class="container-x py-16 lg:py-24">
-  <div class="max-w-narrow mb-10 lg:mb-14 reveal">
-    <div class="eyebrow mb-3">{s.tech.eyebrow}</div>
-    <h2 class="mb-4">{s.tech.title}</h2>
-    <p class="lede">{s.tech.lede}</p>
-  </div>
-
-  <div class="grid md:grid-cols-3 gap-4 lg:gap-6">
-    {
-      [s.tech.imasa, s.tech.alex, s.tech.aia].map((tech, i) => (
-        <div class="reveal relative overflow-hidden">
-          <div class="card p-7 lg:p-8 h-full">
-            <div class="text-[11px] uppercase tracking-[0.16em] font-bold text-brand-700 mb-3">
-              {String(i + 1).padStart(2, "0")}
-            </div>
-            <h3 class="text-[22px] mb-1.5">{tech.title}</h3>
-            <p class="text-brand-700 text-[13px] font-semibold mb-4">{tech.tagline}</p>
-            <p class="text-ink-600 text-[14.5px] leading-relaxed">{tech.body}</p>
-          </div>
-        </div>
-      ))
-    }
-  </div>
-</section>
-
-
 
 <!-- ========================================================================== -->
 <!-- LOCATIONS PREVIEW -->
 <!-- ========================================================================== -->
-<section class="container-x py-16 lg:py-24">
-  <div class="max-w-narrow mb-10 lg:mb-14 reveal">
-    <div class="eyebrow mb-3">{s.locations_preview.eyebrow}</div>
-    <h2 class="mb-4">{s.locations_preview.title}</h2>
-    <p class="lede">{s.locations_preview.lede}</p>
-  </div>
-
-  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-    {
-      s.locations_preview.cities.map((c) => {
-        const photoMap = {
-          astana: { src: "/photos/astana-baitursynova-600.jpg", src2x: "/photos/astana-baitursynova-1200.jpg" },
-          almaty: { src: "/photos/almaty-seifullina-600.jpg", src2x: "/photos/almaty-seifullina-1200.jpg" },
-          karaganda: { src: "/photos/karaganda-stepnoy-600.jpg", src2x: "/photos/karaganda-stepnoy-1200.jpg" },
-          temirtau: { src: "/photos/temirtau-mira-600.jpg", src2x: "/photos/temirtau-mira-1200.jpg" },
-        };
-        const p = photoMap[c.slug as keyof typeof photoMap];
-        return (
-          <a href={lp(`/locations#${c.slug}`)} class="card-hover group flex flex-col reveal overflow-hidden">
-            <div class="aspect-[4/3] bg-ink-900 relative overflow-hidden">
-              <img
-                src={p.src}
-                srcset={`${p.src} 1x, ${p.src2x} 2x`}
-                alt={`Филиал IdeaLab в ${c.city}`}
-                class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                loading="lazy"
-              />
-            </div>
-            <div class="p-6 flex-1 flex flex-col">
-              <h3 class="text-[20px] mb-3 text-ink-900">{c.city}</h3>
-              <ul class="space-y-1.5 text-[13.5px] text-ink-600 mb-4">
-                {c.addresses.map((a) => <li>{a}</li>)}
-              </ul>
-              <div class="mt-auto space-y-2 pt-4 border-t border-rule">
-                <div class="text-[13px] text-ink-400 inline-flex items-center gap-2">
-                  <span class="inline-flex h-4 w-4" set:html={icons.clock} />
+<section class="bg-mist border-y border-rule py-16 lg:py-24">
+  <div class="container-x">
+    <div class="max-w-narrow mb-10 lg:mb-14 reveal">
+      <div class="eyebrow mb-3">{s.locations_preview.eyebrow}</div>
+      <h2 class="mb-4">{s.locations_preview.title}</h2>
+      <p class="lede">{s.locations_preview.lede}</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      {
+        s.locations_preview.cities.map((c) => {
+          const p = photoMap[c.slug as keyof typeof photoMap];
+          return (
+            <a href={lp(`/locations#${c.slug}`)} class="card-hover group flex flex-col reveal overflow-hidden bg-white">
+              <div class="aspect-[4/3] bg-mist relative overflow-hidden">
+                <img src={p.src} srcset={`${p.src} 1x, ${p.src2x} 2x`} alt={`IdeaLab — ${c.city}`} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+              </div>
+              <div class="p-5 flex-1 flex flex-col">
+                <h3 class="text-[19px] mb-2 text-ink-900">{c.city}</h3>
+                <ul class="space-y-1.5 text-[13.5px] text-ink-600 mb-4">{c.addresses.map((a) => <li>{a}</li>)}</ul>
+                <div class="mt-auto pt-3 border-t border-rule text-[13px] text-ink-400 inline-flex items-start gap-2">
+                  <span class="inline-flex h-4 w-4 flex-shrink-0 mt-0.5" set:html={icons.clock} />
                   {c.hours}
                 </div>
-                <div class="text-[13.5px] font-semibold text-brand-700 inline-flex items-center gap-2">
-                  <span class="inline-flex h-4 w-4" set:html={icons.phone} />
-                  {c.phone_label}
-                </div>
               </div>
-            </div>
-          </a>
-        );
-      })
-    }
-  </div>
-
-  <div class="mt-10 lg:mt-12 text-center reveal">
-    <a href={lp("/locations")} class="btn-ghost">{s.locations_preview.cta}</a>
+            </a>
+          );
+        })
+      }
+    </div>
+    <div class="mt-10 text-center reveal">
+      <a href={lp("/locations")} class="btn-ghost !bg-white">{s.locations_preview.cta}</a>
+    </div>
   </div>
 </section>
 
-
+<!-- ========================================================================== -->
+<!-- FAQ -->
+<!-- ========================================================================== -->
+<section class="container-x py-16 lg:py-24">
+  <div class="grid lg:grid-cols-[1fr_2fr] gap-8 lg:gap-16">
+    <h2 class="reveal">{s.home.faq_title}</h2>
+    <div class="divide-y divide-rule border-y border-rule reveal">
+      {
+        s.home.faq.map((f) => (
+          <details class="group py-5">
+            <summary class="flex cursor-pointer list-none items-start justify-between gap-6 text-[17px] font-semibold text-ink-900">
+              {f.q}
+              <span class="mt-1 text-brand-700 transition group-open:rotate-45 text-[20px] leading-none">+</span>
+            </summary>
+            <p class="mt-3 text-ink-600 text-[15.5px] leading-relaxed max-w-prose">{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
 
 <!-- ========================================================================== -->
 <!-- CONTACT CTA -->
 <!-- ========================================================================== -->
-<section class="relative">
+<section class="relative pb-16 lg:pb-24">
   <div class="container-x">
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-600 via-brand to-brand-400 text-white p-8 sm:p-12 lg:p-16 reveal">
-      <div class="absolute inset-0 bg-grid opacity-15"></div>
+    <div class="relative overflow-hidden rounded-3xl bg-brand-700 text-white p-8 sm:p-12 lg:p-16 reveal">
       <div class="relative grid lg:grid-cols-[1.4fr_1fr] gap-8 items-center">
         <div>
           <div class="eyebrow !text-white/80 mb-3">{s.contact_cta.eyebrow}</div>
@@ -255,13 +298,13 @@ const serviceIconKeys = [
           <p class="text-white/85 text-[17px] leading-relaxed max-w-prose">{s.contact_cta.body}</p>
         </div>
         <div class="flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-stretch">
-          <a href="https://wa.me/77759893287" target="_blank" rel="noopener" class="btn-gold lg:w-full justify-center">
+          <a href={waHref(VOICE_ASSISTANT_WHATSAPP)} target="_blank" rel="noopener" class="btn-gold lg:w-full justify-center">
             <span class="inline-flex h-4 w-4" set:html={icons.chat} />
-            {s.contact_cta.cta_chat}
+            {s.contact_cta.cta_chat} · {VOICE_ASSISTANT_WHATSAPP}
           </a>
-          <a href="tel:+77004286568" class="btn-ghost !bg-white lg:w-full justify-center">
+          <a href={telHref(VOICE_ASSISTANT_PHONE)} class="btn-ghost !bg-white lg:w-full justify-center">
             <span class="inline-flex h-4 w-4" set:html={icons.phone} />
-            {s.contact_cta.cta_call}
+            {s.contact_cta.cta_call} · {VOICE_ASSISTANT_PHONE}
           </a>
         </div>
       </div>

@@ -1,5 +1,5 @@
 ---
-import { t, type Locale, LOCALES, LOCALE_LABELS, localizedPath } from "../i18n/ui";
+import { t, type Locale, LOCALES, LOCALE_LABELS, localizedPath, RESULTS_URL } from "../i18n/ui";
 
 interface Props {
   locale: Locale;
@@ -79,7 +79,7 @@ const navItems = [
       </div>
 
       <a
-        href="/results"
+        href={RESULTS_URL} target="_blank" rel="noopener"
         
         class="btn-gold !py-2 !px-3 !text-[13px] sm:!text-[14px] sm:!px-4 hidden sm:inline-flex"
       >
@@ -132,7 +132,7 @@ const navItems = [
           }
         </div>
         <a
-          href="/results"
+          href={RESULTS_URL} target="_blank" rel="noopener"
           
           class="btn-gold !py-2 !px-3 !text-[13px]"
         >

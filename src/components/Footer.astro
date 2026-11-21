@@ -1,5 +1,5 @@
 ---
-import { t, type Locale } from "../i18n/ui";
+import { t, type Locale, RESULTS_URL } from "../i18n/ui";
 
 interface Props {
   locale: Locale;
@@ -46,7 +46,7 @@ const pagesLabel = ru ? "Страницы" : "Беттер";
         <p class="mt-4 max-w-prose text-white/65 text-[15px] leading-relaxed">{s.footer.tagline}</p>
       </div>
       <a
-        href={lp("/results")}
+        href={RESULTS_URL} target="_blank" rel="noopener"
         class="btn-gold inline-flex w-full sm:w-auto justify-center"
       >
         {s.nav.results_cta}
@@ -63,8 +63,8 @@ const pagesLabel = ru ? "Страницы" : "Беттер";
           <li><a href={lp("/services")} class="text-white/65 hover:text-brand-300">{s.nav.services}</a></li>
           <li><a href={lp("/locations")} class="text-white/65 hover:text-brand-300">{s.nav.locations}</a></li>
           <li><a href={lp("/license")} class="text-white/65 hover:text-brand-300">{ru ? "Лицензия" : "Лицензия"}</a></li>
-          <li><a href="/offer" class="text-white/65 hover:text-brand-300">{ru ? "Публичная оферта" : "Жария оферта"}</a></li>
-          <li><a href="/preparation" class="text-white/65 hover:text-brand-300">{ru ? "Подготовка" : "Дайындық"}</a></li>
+          <li><a href={lp("/offer")} class="text-white/65 hover:text-brand-300">{ru ? "Публичная оферта" : "Жария оферта"}</a></li>
+          <li><a href={lp("/preparation")} class="text-white/65 hover:text-brand-300">{ru ? "Подготовка" : "Дайындық"}</a></li>
         </ul>
       </div>
 
@@ -75,7 +75,7 @@ const pagesLabel = ru ? "Страницы" : "Беттер";
           <div class="text-white">{companyName}</div>
           <div><span class="text-white/45">{legalAddrLabel}:</span> {legalAddr}</div>
           <div class="pt-3">
-            <a href="tel:+77004286568" class="text-white hover:text-brand-300 block">+7 (700) 428-65-68</a>
+            <a href="tel:+77004286568" class="text-white hover:text-brand-300 block">+7 (700) 428-65-68 <span class="text-white/45 text-[12px]">{ru ? "голосовой помощник" : "дауыстық көмекші"}</span></a>
             <a href="https://wa.me/77759893287" target="_blank" rel="noopener" class="text-white hover:text-brand-300 block">+7 (775) 989-32-87 <span class="text-white/45 text-[12px]">WhatsApp</span></a>
             <a href="mailto:idealab.nii@gmail.com" class="text-white/65 hover:text-brand-300 block mt-1">idealab.nii@gmail.com</a>
           </div>
