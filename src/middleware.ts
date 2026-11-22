@@ -8,6 +8,8 @@ import { defineMiddleware } from "astro:middleware";
 // path-prefix → new canonical path (RU default; KK gets prefixed below)
 const REDIRECTS: Record<string, string> = {
   // Old idealab.kz WordPress URLs → new Astro routes
+  "/ru": "/",
+  "/ru/": "/",
   "/ru/services": "/services",
   "/ru/services/": "/services",
   "/ru/contacts": "/locations",

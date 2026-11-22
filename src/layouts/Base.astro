@@ -141,6 +141,7 @@ const htmlLangMap: Record<Locale, string> = {
         "telephone": "+7 (700) 428-65-68",
       })}
     />
+    <noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript>
   </head>
   <body class="min-h-screen flex flex-col">
     <Header locale={locale} />
@@ -166,9 +167,13 @@ const htmlLangMap: Record<Locale, string> = {
         );
       }
 
-      // Scroll-reveal
+      // Scroll-reveal with a safety net: content must never stay at opacity 0.
+      // It shows a little before it enters the screen, all at once at the bottom of the page,
+      // and everything after a few seconds anyway (link previews, crawlers, print, fast scroll).
       const reveals = document.querySelectorAll(".reveal");
-      if ("IntersectionObserver" in window && reveals.length) {
+      const revealAll = () => reveals.forEach((el) => el.classList.add("is-visible"));
+      const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if ("IntersectionObserver" in window && reveals.length && !reduced) {
         const io = new IntersectionObserver(
           (entries) => {
             entries.forEach((e) => {
@@ -178,11 +183,20 @@ const htmlLangMap: Record<Locale, string> = {
               }
             });
           },
-          { rootMargin: "0px 0px -10% 0px", threshold: 0.05 },
+          { rootMargin: "0px 0px 15% 0px", threshold: 0 },
         );
         reveals.forEach((el) => io.observe(el));
+        const nearBottom = () => {
+          if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200) {
+            revealAll();
+            window.removeEventListener("scroll", nearBottom);
+          }
+        };
+        window.addEventListener("scroll", nearBottom, { passive: true });
+        window.addEventListener("beforeprint", revealAll);
+        setTimeout(revealAll, 4000);
       } else {
-        reveals.forEach((el) => el.classList.add("is-visible"));
+        revealAll();
       }
     </script>
   </body>
