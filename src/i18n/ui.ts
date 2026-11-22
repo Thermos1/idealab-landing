@@ -242,7 +242,7 @@ const ru: Strings = {
     preparation: "Подготовка",
   },
   hero: {
-    eyebrow: "IdeaLab.kz · медицинская лаборатория",
+    eyebrow: "IdeaLab",
     h1_lead: "Анализы на",
     h1_accent: "аутоиммунные заболевания",
     h1_tail: "",
@@ -459,7 +459,7 @@ const kk: Strings = {
     preparation: "Анализдерге дайындық",
   },
   hero: {
-    eyebrow: "IdeaLab.kz · медициналық зертхана",
+    eyebrow: "IdeaLab",
     h1_lead: "",
     h1_accent: "Аутоиммунды ауруларға",
     h1_tail: "арналған талдаулар",
