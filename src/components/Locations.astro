@@ -22,7 +22,12 @@ const gisQueries = {
   temirtau: ["Мира 114"],
   shymkent: ["Акпан батыра 42", "Кабанбай батыра 26"],
 };
+// Exact 2GIS cards where the client sent one (beats a search by address).
+const gisExact: Record<string, string> = {
+  "almaty:1": "https://2gis.kz/almaty/geo/9430047375186978", // Райымбека 540/7, LB Clinic — link from the client's docx 21.11
+};
 const gisHref = (slug: string, i: number) => {
+  if (gisExact[`${slug}:${i}`]) return gisExact[`${slug}:${i}`];
   const q = gisQueries[slug as keyof typeof gisQueries]?.[i];
   const city = gisCity[slug as keyof typeof gisCity];
   return q && city ? `https://2gis.kz/${city}/search/${encodeURIComponent(q)}` : undefined;
